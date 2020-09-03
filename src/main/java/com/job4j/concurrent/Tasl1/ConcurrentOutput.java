@@ -1,4 +1,4 @@
-package com.job4j.Tasl1;
+package com.job4j.concurrent.Tasl1;
 
 public class ConcurrentOutput {
     public static void main(String []args){

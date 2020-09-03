@@ -1,4 +1,4 @@
-package com.job4j.Task1_1;
+package com.job4j.concurrent.Task1_1;
 
 public class ThreadState {
     public static void main(String[] args) throws InterruptedException {
