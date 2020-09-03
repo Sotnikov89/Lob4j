@@ -1,4 +1,4 @@
-package com.job4j.concurrent.Task4;
+package ru.job4j;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -23,17 +23,14 @@ public class FileDownload {
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
 
-                long timePassed = (System.currentTimeMillis()-timeStart)/1000;
-                int bytesDownloaded = ++bytesRead;
+                long timePassed = (System.currentTimeMillis() - timeStart);  // how long we downloading file
+                long bytesDownloaded = ++bytesRead;  // how many bytes we downloaded
 
-                if (bytesDownloaded/1000>maxKBPerSecond && timePassed<1){
-
-                 //   Thread.sleep();
+                if (bytesDownloaded / timePassed > maxKBPerSecond) {
+                    long requiredTime = bytesDownloaded / maxKBPerSecond; // how long we mast download "bytesDownloaded" for speed "maxKBPerSecond"
+                    Thread.sleep(requiredTime - timePassed);
                 }
-                //Thread.sleep(1000);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
