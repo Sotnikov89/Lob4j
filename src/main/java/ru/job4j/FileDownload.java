@@ -2,9 +2,7 @@ package ru.job4j;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URL;
-import java.util.Locale;
 
 public class FileDownload {
 
