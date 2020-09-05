@@ -5,8 +5,6 @@ import java.io.FileOutputStream;
 import java.net.URL;
 
 public class FileDownload {
-
-
     public static void main(String[] args) throws Exception {
         String file = "https://raw.githubusercontent.com/peterarsentev/course_test/master/pom.xml";
         int maxKBPerSecond = 200;
