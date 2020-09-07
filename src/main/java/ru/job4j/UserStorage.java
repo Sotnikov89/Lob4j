@@ -11,7 +11,7 @@ import java.util.Map;
 @ThreadSafe
 public class UserStorage {
 
-    private Map<Integer, User> usersDb = new HashMap<>();
+    private final Map<Integer, User> usersDb = new HashMap<>();
 
     boolean add(User user) {
         synchronized(user) {
@@ -26,28 +26,28 @@ public class UserStorage {
     }
 
     boolean update(User user) {
-        synchronized(user) {
             if (usersDb.containsKey(user.getId())) {
-                usersDb.put(user.getId(), user);
+                synchronized (usersDb.get(user.getId())) {
+                    usersDb.put(user.getId(), user);
+                }
                 return true;
             } else {
                 System.out.println("User not found");
                 return false;
             }
-        }
     }
 
     boolean delete(User user) {
-        synchronized(user) {
             if (usersDb.containsKey(user.getId())) {
-                usersDb.remove(user.getId());
+                synchronized (usersDb.get(user.getId())) {
+                    usersDb.remove(user.getId());
+                }
                 return true;
             } else {
                 System.out.println("User not found");
                 return false;
             }
         }
-    }
 
     synchronized boolean transfer(int fromId, int toId, int amount) {
         if (usersDb.containsKey(fromId) & usersDb.containsKey(toId)){
