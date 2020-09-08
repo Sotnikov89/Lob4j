@@ -39,4 +39,8 @@ public class SimpleBlockingQueue<T> {
                 + " - Объект - " + t + ", получен.");
         return t;
     }
+
+    public synchronized Queue<T> getQueue() {
+        return queue;
+    }
 }
