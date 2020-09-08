@@ -1,6 +1,5 @@
 package ru.job4j;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -67,7 +66,6 @@ public class UserStorage {
         }
     }
 
-    @AllArgsConstructor
     @EqualsAndHashCode
     @ThreadSafe
     public static class User {
@@ -75,6 +73,12 @@ public class UserStorage {
         private final int id;
         @GuardedBy("this")
         private int amount;
+
+        public User(int id, int amount) {
+            this.id = id;
+            this.amount = amount;
+        }
+
 
         public int getId() {
             return id;

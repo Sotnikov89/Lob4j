@@ -2,7 +2,7 @@ package ru.job4j.parserfile;
 
 import java.io.*;
 
-public class ReadContentWithoutUnicodeGetContent implements StrategyGetContent {
+public class ReadContentWithoutUnicode implements StrategyGetContent {
 
     @Override
     public synchronized String getContent(File file) {
