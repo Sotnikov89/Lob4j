@@ -13,52 +13,46 @@ public class UserStorage {
     @GuardedBy("this")
     private final Map<Integer, User> usersDb = new HashMap<>();
 
+    private synchronized boolean userExist(User user) {
+        return usersDb.containsKey(user.getId());
+    }
+
     public synchronized boolean add(User user) {
-        if (usersDb.containsKey(user.getId())) {
-            System.out.println("User id already exist");
-            return false;
-        } else {
+        if (!userExist(user)) {
             usersDb.put(user.getId(), user);
             return true;
         }
+        return false;
     }
 
     public synchronized boolean update(User user) {
-        if (usersDb.containsKey(user.getId())) {
+        if (userExist(user)) {
             usersDb.put(user.getId(), user);
             return true;
-        } else {
-            System.out.println("User not found");
-            return false;
         }
+        return false;
     }
 
     public synchronized boolean delete(User user) {
-        if (usersDb.containsKey(user.getId())) {
+        if (userExist(user)) {
             usersDb.remove(user.getId());
             return true;
-        } else {
-            System.out.println("User not found");
-            return false;
         }
+        return false;
     }
 
     public synchronized boolean transfer(int fromId, int toId, int amount) {
-        if (usersDb.containsKey(fromId) && usersDb.containsKey(toId)){
-            User userForm = usersDb.get(fromId);
-            User userToId = usersDb.get(toId);
-            if (userForm.getAmount() >= amount) {
-                userForm.setAmount(userForm.getAmount() - amount);
-                userToId.setAmount(userToId.getAmount() + amount);
-                return true;
-            } else {
-                System.out.println("Not enough money");
-                return false;
+        if (usersDb.get(fromId).amount >= amount
+                && usersDb.containsKey(toId)) {
+
+            User userFrom = usersDb.get(fromId);
+            User userTo = usersDb.get(toId);
+
+            userFrom.setAmount(userFrom.getAmount() - amount);
+            userTo.setAmount(userTo.getAmount() + amount);
+            return true;
             }
-        } else {
-            System.out.println("Users not found");
-            return false;
-        }
+        return false;
     }
 
     @EqualsAndHashCode
