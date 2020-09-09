@@ -10,46 +10,41 @@ import java.util.Map;
 @ThreadSafe
 public class UserStorage {
 
+    @GuardedBy("this")
     private final Map<Integer, User> usersDb = new HashMap<>();
 
-    boolean add(User user) {
-        synchronized(user) {
-            if (usersDb.containsKey(user.getId())) {
-                System.out.println("User id already exist");
-                return false;
-            } else {
-                usersDb.put(user.getId(), user);
-                return true;
-            }
+    public synchronized boolean add(User user) {
+        if (usersDb.containsKey(user.getId())) {
+            System.out.println("User id already exist");
+            return false;
+        } else {
+            usersDb.put(user.getId(), user);
+            return true;
         }
     }
 
-    boolean update(User user) {
-            if (usersDb.containsKey(user.getId())) {
-                synchronized (usersDb.get(user.getId())) {
-                    usersDb.put(user.getId(), user);
-                }
-                return true;
-            } else {
-                System.out.println("User not found");
-                return false;
-            }
+    public synchronized boolean update(User user) {
+        if (usersDb.containsKey(user.getId())) {
+            usersDb.put(user.getId(), user);
+            return true;
+        } else {
+            System.out.println("User not found");
+            return false;
+        }
     }
 
-    boolean delete(User user) {
-            if (usersDb.containsKey(user.getId())) {
-                synchronized (usersDb.get(user.getId())) {
-                    usersDb.remove(user.getId());
-                }
-                return true;
-            } else {
-                System.out.println("User not found");
-                return false;
-            }
+    public synchronized boolean delete(User user) {
+        if (usersDb.containsKey(user.getId())) {
+            usersDb.remove(user.getId());
+            return true;
+        } else {
+            System.out.println("User not found");
+            return false;
         }
+    }
 
-    synchronized boolean transfer(int fromId, int toId, int amount) {
-        if (usersDb.containsKey(fromId) & usersDb.containsKey(toId)){
+    public synchronized boolean transfer(int fromId, int toId, int amount) {
+        if (usersDb.containsKey(fromId) && usersDb.containsKey(toId)){
             User userForm = usersDb.get(fromId);
             User userToId = usersDb.get(toId);
             if (userForm.getAmount() >= amount) {
@@ -67,11 +62,9 @@ public class UserStorage {
     }
 
     @EqualsAndHashCode
-    @ThreadSafe
     public static class User {
-        @GuardedBy("this")
+
         private final int id;
-        @GuardedBy("this")
         private int amount;
 
         public User(int id, int amount) {
@@ -79,16 +72,15 @@ public class UserStorage {
             this.amount = amount;
         }
 
-
         public int getId() {
             return id;
         }
 
-        public synchronized int getAmount() {
+        public int getAmount() {
             return amount;
         }
 
-        public synchronized void setAmount(int amount) {
+        public void setAmount(int amount) {
             this.amount = amount;
         }
     }
