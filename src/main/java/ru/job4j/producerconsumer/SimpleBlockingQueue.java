@@ -18,18 +18,18 @@ public class SimpleBlockingQueue<T> {
     }
 
     public synchronized void offer(T value) throws InterruptedException {
-        if (queue.size() == maxQueueSize) {
-            this.wait();
-        }
-        this.notifyAll();
-        queue.offer(value);
+            if (queue.size() == maxQueueSize) {
+                this.wait();
+            }
+            this.notifyAll();
+            queue.offer(value);
     }
 
     public synchronized T poll() throws InterruptedException {
-        if (queue.isEmpty()) {
-            this.wait();
-        }
-        this.notifyAll();
-        return queue.poll();
+            if (queue.isEmpty()) {
+                this.wait();
+            }
+            this.notifyAll();
+            return queue.poll();
     }
 }

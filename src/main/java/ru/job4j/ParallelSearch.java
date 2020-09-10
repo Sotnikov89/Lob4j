@@ -4,13 +4,11 @@ import ru.job4j.producerconsumer.SimpleBlockingQueue;
 
 public class ParallelSearch {
 
-    public static void main(String[] args) {
-
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<Integer>();
-
+    public static void main(String[] args) throws InterruptedException {
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<Integer>(10);
         final Thread consumer = new Thread(
                 () -> {
-                    while (true) {
+                    while (!Thread.currentThread().isInterrupted()) {
                         try {
                             System.out.println(queue.poll());
                         } catch (InterruptedException e) {
@@ -21,8 +19,7 @@ public class ParallelSearch {
                 }
         );
         consumer.start();
-
-        final Thread producer = new Thread(
+        new Thread(
                 () -> {
                     for (int index = 0; index != 3; index++) {
                         try {
@@ -32,11 +29,9 @@ public class ParallelSearch {
                             e.printStackTrace();
                         }
                     }
+                    consumer.interrupt();
                 }
 
-        );
-        producer.start();
-
-
+        ).start();
     }
 }
