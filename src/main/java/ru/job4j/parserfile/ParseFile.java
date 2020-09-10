@@ -9,8 +9,6 @@ public class ParseFile {
         file = f;
     }
 
-    public synchronized File getFile() {
-        return file;
-    }
+
 
 }

@@ -27,6 +27,7 @@ public class SimpleBlockingQueueTest {
                     }
                 }
         );
+        producer.start();
 
         Thread consumer = new Thread(
                 () -> {
@@ -40,36 +41,11 @@ public class SimpleBlockingQueueTest {
                     }
                 }
         );
-        producer.start();
         consumer.start();
+
         consumer.join();
         consumer.interrupt();
 
         assertThat(buffer, is(Arrays.asList(0, 1, 2, 3, 4)));
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(2);
-
-        Thread producer1 = new Thread(() -> {
-            try {
-                queue.offer(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        Thread consumer1 = new Thread(() -> {
-            try {
-                queue.poll();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-
-        producer1.start();
-        producer1.join();
-        consumer1.start();
-        consumer1.join();
     }
 }
