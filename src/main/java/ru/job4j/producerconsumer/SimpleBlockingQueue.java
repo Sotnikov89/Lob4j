@@ -26,7 +26,7 @@ public class SimpleBlockingQueue<T> {
     }
 
     public synchronized T poll() throws InterruptedException {
-            if (queue.isEmpty()) {
+            if (queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
                 this.wait();
             }
             this.notifyAll();
