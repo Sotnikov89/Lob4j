@@ -12,14 +12,12 @@ public class CASСount <T> {
 
     public void increment() {
         Integer presentValue;
-        Integer newValue;
         do {
             presentValue = count.get();
             if (presentValue == null) {
                 throw new UnsupportedOperationException("Count is not impl.");
             }
-            newValue = presentValue + 1;
-        } while (!count.compareAndSet(presentValue,newValue));
+        } while (!count.compareAndSet(presentValue,++presentValue));
     }
 
     public int get() {
@@ -27,7 +25,7 @@ public class CASСount <T> {
     }
 
     @Test
-    public void increment2Thread() throws InterruptedException {
+    public void increment3Thread() throws InterruptedException {
         CASСount<Integer> cas = new CASСount<>();
         cas.count.set(0);
 
@@ -43,11 +41,19 @@ public class CASСount <T> {
             }
         });
 
+        Thread thread3 = new Thread(() -> {
+            for (int i = 0; i != 10; i++) {
+                cas.increment();
+            }
+        });
+
         thread1.start();
         thread2.start();
+        thread3.start();
         thread1.join();
         thread2.join();
+        thread3.join();
 
-        assertEquals(cas.get(), 20);
+        assertEquals(cas.get(), 30);
     }
 }
