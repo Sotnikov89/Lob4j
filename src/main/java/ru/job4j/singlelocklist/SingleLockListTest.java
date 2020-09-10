@@ -9,6 +9,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class SingleLockListTest {
+
     @Test
     public void add() throws InterruptedException {
         SingleLockList<Integer> list = new SingleLockList<>();

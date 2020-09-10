@@ -11,17 +11,22 @@ import java.util.List;
 public class SingleLockList<T> implements Iterable<T> {
 
     @GuardedBy("this")
-    private List<T> list = new ArrayList<>();
+    private final List<T> list = new ArrayList<>();
 
-    public void add(T value) {
+    public synchronized void add(T value) {
+        list.add(value);
     }
 
-    public T get(int index) {
-        return null;
+    public synchronized T get(int index) {
+        return list.get(index);
     }
 
     @Override
-    public Iterator<T> iterator() {
-        return null;
+    public synchronized Iterator<T> iterator() {
+        return copy(list).iterator();
+    }
+
+    private List<T> copy(List<T> list) {
+        return new ArrayList<>(list);
     }
 }
