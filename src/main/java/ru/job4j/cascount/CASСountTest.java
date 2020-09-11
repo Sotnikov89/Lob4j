@@ -1,33 +1,14 @@
-package ru.job4j;
+package ru.job4j.cascount;
 
 import org.junit.Test;
 
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
-
 import static org.junit.Assert.assertEquals;
 
-public class CASСount <T> {
-    private final AtomicReference<Integer> count = new AtomicReference<>();
-
-    public void increment() {
-        Integer presentValue;
-        do {
-            presentValue = count.get();
-            if (presentValue == null) {
-                throw new UnsupportedOperationException("Count is not impl.");
-            }
-        } while (!count.compareAndSet(presentValue,++presentValue));
-    }
-
-    public int get() {
-        return Optional.of(count.get()).orElseThrow(() -> new UnsupportedOperationException("Count is not impl."));
-    }
+public class CASСountTest {
 
     @Test
     public void increment3Thread() throws InterruptedException {
-        CASСount<Integer> cas = new CASСount<>();
-        cas.count.set(0);
+        CASСount<Integer> cas = new CASСount<>(0);
 
         Thread thread1 = new Thread(() -> {
             for (int i = 0; i != 10; i++) {
