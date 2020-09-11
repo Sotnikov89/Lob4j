@@ -18,7 +18,7 @@ public class SimpleBlockingQueue<T> {
     }
 
     public synchronized void offer(T value) throws InterruptedException {
-            if (queue.size() == maxQueueSize) {
+            while (queue.size() == maxQueueSize) {
                 this.wait();
             }
             this.notifyAll();
@@ -26,7 +26,7 @@ public class SimpleBlockingQueue<T> {
     }
 
     public synchronized T poll() throws InterruptedException {
-            if (queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
+            while (queue.isEmpty()) {
                 this.wait();
             }
             this.notifyAll();
