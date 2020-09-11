@@ -15,14 +15,6 @@ public class CountBarrier {
     @GuardedBy("this")
     private int count = 0;
 
-    public synchronized int getTotal() {
-        return total;
-    }
-
-    public synchronized int getCount() {
-        return count;
-    }
-
     public CountBarrier(final int total) {
         this.total = total;
     }
@@ -34,9 +26,9 @@ public class CountBarrier {
 
     public void await() {
         synchronized (monitor) {
-            while (getTotal() != getCount()) {
+            while (total != count) {
                 try {
-                    this.wait();
+                    monitor.wait();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
