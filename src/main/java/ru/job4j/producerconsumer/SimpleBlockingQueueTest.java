@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -18,20 +19,22 @@ public class SimpleBlockingQueueTest {
 
         Thread producer = new Thread(
                 () -> {
-                    for (int index = 0; index != 5; index++) {
-                        try {
-                            queue.offer(index);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    IntStream.range(0, 5).forEach(
+                            value -> {
+                                try {
+                                    queue.offer(value);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    );
                 }
         );
         producer.start();
 
         Thread consumer = new Thread(
                 () -> {
-                    while (true) {
+                    while (!Thread.currentThread().isInterrupted()) {
                         try {
                             buffer.add(queue.poll());
                         } catch (InterruptedException e) {
@@ -43,8 +46,9 @@ public class SimpleBlockingQueueTest {
         );
         consumer.start();
 
-        consumer.join();
+        producer.join();
         consumer.interrupt();
+        consumer.join();
 
         assertThat(buffer, is(Arrays.asList(0, 1, 2, 3, 4)));
     }
