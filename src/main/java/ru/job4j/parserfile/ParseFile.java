@@ -3,12 +3,10 @@ package ru.job4j.parserfile;
 import java.io.*;
 
 public class ParseFile {
+
     private File file;
 
-    public synchronized void setFile(File f) {
-        file = f;
+    public ParseFile(File file) {
+        this.file = file;
     }
-
-
-
 }
