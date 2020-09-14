@@ -19,9 +19,11 @@ public class CountBarrier {
         this.total = total;
     }
 
-    public synchronized void count() {
-        count++;
-        monitor.notifyAll();
+    public void count() {
+        synchronized (monitor) {
+            count++;
+            monitor.notifyAll();
+        }
     }
 
     public void await() {
