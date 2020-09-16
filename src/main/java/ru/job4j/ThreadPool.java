@@ -17,15 +17,17 @@ public class ThreadPool {
 
         for (int i = 0; i<sizeOfThreads; i++) {
             threads.add( new Thread(() -> {
-                while (isRunning) {
+                while (isRunning || !tasks.isEmpty()) {
                     try {
-                        Runnable runnable = tasks.poll();
-                        runnable.run();
+                        tasks.poll().run();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             }));
+        }
+        for (Thread thread : threads) {
+            thread.start();
         }
     }
 
@@ -36,6 +38,6 @@ public class ThreadPool {
     }
 
     public void shutdown() {
-        threads.forEach(Thread::start);
+        isRunning = false;
     }
 }
