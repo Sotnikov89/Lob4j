@@ -2,10 +2,10 @@ package ru.job4j.cascount;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class CASСount <T> {
+public class CasCount<T> {
     private final AtomicReference<Integer> count = new AtomicReference<>();
 
-    public CASСount(int startValue) {
+    public CasCount(int startValue) {
         count.set(startValue);
     }
 
@@ -13,7 +13,7 @@ public class CASСount <T> {
         Integer presentValue;
         do {
             presentValue = count.get();
-        } while (!count.compareAndSet(presentValue,++presentValue));
+        } while (!count.compareAndSet(presentValue, ++presentValue));
     }
 
     public int get() {

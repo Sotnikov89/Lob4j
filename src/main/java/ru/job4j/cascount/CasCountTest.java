@@ -4,11 +4,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class CASСountTest {
+public class CasCountTest {
 
     @Test
     public void increment3Thread() throws InterruptedException {
-        CASСount<Integer> cas = new CASСount<>(0);
+        CasCount<Integer> cas = new CasCount<>(0);
 
         Thread thread1 = new Thread(() -> {
             for (int i = 0; i != 10; i++) {

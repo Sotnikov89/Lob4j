@@ -4,7 +4,7 @@ import javax.sql.rowset.Predicate;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-public class ReadContent implements GetContent{
+public class ReadContent implements GetContent {
 
     public String getContent(File file) {
         StringBuilder stringBuilder = new StringBuilder();

@@ -7,7 +7,7 @@ public class EmailNotification {
     ExecutorService pool = Executors.newFixedThreadPool(
             Runtime.getRuntime().availableProcessors());
 
-    public void emailTo (User user) {
+    public void emailTo(User user) {
         pool.submit(new Runnable() {
             @Override
             public void run() {
@@ -18,7 +18,7 @@ public class EmailNotification {
         });
     }
 
-    private void close () {
+    private void close() {
         pool.shutdown();
     }
 

@@ -15,8 +15,8 @@ public class ThreadPool {
 
         tasks = new SimpleBlockingQueue<>(maxSizeOfTasks);
 
-        for (int i = 0; i<sizeOfThreads; i++) {
-            threads.add( new Thread(() -> {
+        for (int i = 0; i < sizeOfThreads; i++) {
+            threads.add(new Thread(() -> {
                 while (isRunning || !tasks.isEmpty()) {
                     try {
                         tasks.poll().run();
