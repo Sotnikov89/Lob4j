@@ -9,7 +9,7 @@ public class ThreadPool {
 
     private final List<Thread> threads = new LinkedList<>();
     private final SimpleBlockingQueue<Runnable> tasks;
-    private boolean isRunning = true;
+    private volatile boolean isRunning = true;
 
     public ThreadPool(int maxSizeOfTasks, int sizeOfThreads) {
 
@@ -39,5 +39,6 @@ public class ThreadPool {
 
     public void shutdown() {
         isRunning = false;
+        threads.forEach(Thread::interrupt);
     }
 }
