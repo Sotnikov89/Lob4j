@@ -39,6 +39,8 @@ public class ThreadPool {
 
     public void shutdown() {
         isRunning = false;
-        threads.forEach(Thread::interrupt);
+        for (Thread thread: threads) {
+            thread.interrupt();
+        }
     }
 }
