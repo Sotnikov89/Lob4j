@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>AJAX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ></script>
+
+    <script>
+        function sendGreeting() {
+            $.ajax({
+                type: 'GET',
+                crossdomain: true,
+                url: 'http://localhost:8080/job4j/greet',
+                data: 'name=' + $('#inputEmail').val(),
+                dataType: 'text'
+            }).done(function(data) {
+                $('#idMailLabel').after('<br>'+data);
+            }).fail(function(err){
+                alert(err);
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <form>
+        <div class="form-group">
+            <label for="inputEmail" id="idMailLabel">Email address</label>
+            <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="sendGreeting()">Submit</button>
+    </form>
+</div>
+</body>
+</html>
