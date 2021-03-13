@@ -4,9 +4,10 @@
     <meta charset="utf-8">
     <title>AJAX</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" ></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
     <script>
         function sendGreeting() {
@@ -14,8 +15,26 @@
                 type: 'GET',
                 crossdomain: true,
                 url: 'http://localhost:8080/job4j/greet',
-                data: 'name=' + $('#inputEmail').val(),
-                dataType: 'text'
+                dataType: 'text',
+                data: 'name=' + $('#inputEmail').val()
+            }).done(function(data) {
+                $('#idMailLabel').after('<br>'+data);
+            }).fail(function(err){
+                alert(err);
+            });
+        }
+    </script>
+    <script>
+        function sendGreetingWithJson() {
+            var name = $('#inputEmail').val()
+            $.ajax({
+                type: 'POST',
+                crossdomain: true,
+                url: 'http://localhost:8080/job4j/greet',
+                dataType: 'json',
+                data: JSON.stringify({
+                    name : name
+                })
             }).done(function(data) {
                 $('#idMailLabel').after('<br>'+data);
             }).fail(function(err){
@@ -32,6 +51,7 @@
             <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email">
         </div>
         <button type="button" class="btn btn-primary" onclick="sendGreeting()">Submit</button>
+        <button type="button" class="btn btn-primary" onclick="sendGreetingWithJson()">Submit with Json</button>
     </form>
 </div>
 </body>
