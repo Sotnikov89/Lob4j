@@ -1,4 +1,4 @@
-package ru.job4j;
+package ru.job4j.others;
 
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
@@ -18,7 +18,7 @@ public class ParallelFindIndex extends RecursiveTask<Integer> {
         this.to = to;
     }
 
-    private static Integer findIndex (Object[] array, Object object, int from, int to) {
+    private static Integer findIndex(Object[] array, Object object, int from, int to) {
         int index = -1;
         for (int i = from; i <= to; i++) {
             if (array[i].equals(object)) {
@@ -52,14 +52,14 @@ public class ParallelFindIndex extends RecursiveTask<Integer> {
         }
     }
 
-    public static Integer parallelFindIndex (Object[] array, Object object) {
+    public static Integer parallelFindIndex(Object[] array, Object object) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
-        return forkJoinPool.invoke(new ParallelFindIndex(array, object, 0, array.length-1));
+        return forkJoinPool.invoke(new ParallelFindIndex(array, object, 0, array.length - 1));
     }
 
     public static void main(String[] args) {
         Integer[] integers = new Integer[456];
-        for (int i = 0; i < integers.length; i ++) {
+        for (int i = 0; i < integers.length; i++) {
             integers[i] = new Random().nextInt();
         }
         Integer i = 777777777;

@@ -1,4 +1,4 @@
-package ru.job4j;
+package ru.job4j.others;
 
 public class DCLSingleton {
     private static volatile DCLSingleton inst;
