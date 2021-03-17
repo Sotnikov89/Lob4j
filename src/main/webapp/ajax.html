@@ -32,9 +32,7 @@
                 crossdomain: true,
                 url: 'http://localhost:8080/job4j/greet',
                 dataType: 'json',
-                data: JSON.stringify({
-                    name : name
-                })
+                data: { name : JSON.stringify(name) }
             }).done(function(data) {
                 $('#idMailLabel').after('<br>'+data);
             }).fail(function(err){

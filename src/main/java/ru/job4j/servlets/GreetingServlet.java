@@ -1,5 +1,8 @@
 package ru.job4j.servlets;
 
+import com.google.gson.Gson;
+
+import javax.json.JsonObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +25,14 @@ public class GreetingServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        System.out.println("check");
+
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
         resp.setHeader("Access-Control-Allow-Origin", "*");
 
-        String name = req.getParameter("name");
+        System.out.println(req.getParameter("name"));
     }
 }
 
