@@ -1,7 +1,6 @@
 package ru.job4j.servlets;
 
-import com.google.gson.Gson;
-
+import javax.json.Json;
 import javax.json.JsonObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 
 public class GreetingServlet extends HttpServlet {
     @Override
@@ -26,13 +24,19 @@ public class GreetingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        System.out.println("check");
-
-        resp.setContentType("text/plain");
+        resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         resp.setHeader("Access-Control-Allow-Origin", "*");
 
-        System.out.println(req.getParameter("name"));
+        JsonObject jsonObject = Json.createObjectBuilder()
+                .add("hi", "Hello from doPost")
+                .add("name", req.getParameter("name"))
+                .add("surname", req.getParameter("surname"))
+                .build();
+
+        PrintWriter writer = new PrintWriter(resp.getOutputStream());
+        writer.println(jsonObject.toString());
+        writer.flush();
+
     }
 }
-
