@@ -38,7 +38,7 @@
                     surname: surname
                 }
             }).done(function(data) {
-                $('#button').after('<br>'+data);
+                $('#button').after('<br>'+JSON.stringify(data));
             }).fail(function(err){
                 alert(err);
             });
