@@ -25,6 +25,7 @@ public class GreetingServlet extends HttpServlet {
         resp.setContentType("text/plain");
         resp.setCharacterEncoding("UTF-8");
         resp.setHeader("Access-Control-Allow-Origin", "*");
+
         String name = req.getParameter("name");
     }
 }
