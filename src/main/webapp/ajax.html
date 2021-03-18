@@ -38,18 +38,7 @@
                     surname: surname
                 }
             }).done(function(data) {
-               var name; var surname; var hi;
-                for (const [key, value] of Object.entries(data)) {
-                    if (key === "hi") {
-                        hi = value;
-                    }
-                    if (key === "name") {
-                        name = value;
-                    } else {
-                        surname = value;
-                    }
-                }
-                $('#button').after('<br>'+ hi + ", " + name + " " + surname);
+                $('#button').after('<br>'+ data.hi + ", " + data.name + " " + data.surname);
             }).fail(function(err){
                 alert(err);
             });
