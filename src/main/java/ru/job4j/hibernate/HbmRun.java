@@ -6,7 +6,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 public class HbmRun {
     public static void main(String[] args) {
@@ -17,13 +17,27 @@ public class HbmRun {
             Session session = sf.openSession();
             session.beginTransaction();
 
-            List<CarModel> carModels = List.of(new CarModel("Escape"), new CarModel("Focus"),
-                    new CarModel("Kuga"), new CarModel("Mondeo"), new CarModel("Mustang"));
-            carModels.forEach(session::save);
+            /*
+            Book book1 = new Book("Двойник");
+            Book book2 = new Book("Ночной дозор");
+            Book book3 = new Book("Исповедь");
 
-            CarMake make = new CarMake("Ford");
-            session.createQuery("FROM CarModel").list().forEach(model -> make.addCarModel((CarModel) model));
-            session.save(make);
+            Author author1 = new Author("Сергей Лукьяненко");
+            author1.addBook(book3);
+            Author author2 = new Author("Сара Уотерс");
+            author2.addBook(book3);
+            Author author3 = new Author("Ф.М. Достоевский");
+            author3.addBook(book1);
+            Author author4 = new Author("Жозе Сарамаго");
+            author4.addBook(book1);
+            Author author5 = new Author("Лев Толстой");
+            author5.addBook(book2);
+            Author author6 = new Author("Блаженный Августин");
+            author6.addBook(book2);
+
+            Stream.of(author1, author2, author3, author4, author5, author6).forEach(session::persist);
+            */
+            session.remove(session.get(Author.class, 1));
 
             session.getTransaction().commit();
             session.close();
