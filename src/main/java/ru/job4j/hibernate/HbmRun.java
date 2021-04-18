@@ -6,12 +6,14 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HbmRun {
     public static void main(String[] args) {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure().build();
+        List<CarMake> list2 = new ArrayList<>();
         try {
             SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
             Session session = sf.openSession();
@@ -37,7 +39,25 @@ public class HbmRun {
 
             Stream.of(author1, author2, author3, author4, author5, author6).forEach(session::persist);
             */
-            session.remove(session.get(Author.class, 1));
+
+            /*
+            List<CarModel> carModels = List.of(new CarModel("Escape"), new CarModel("Focus"),
+                    new CarModel("Kuga"), new CarModel("Mondeo"), new CarModel("Mustang"));
+            carModels.forEach(session::save);
+
+            CarMake make = new CarMake("Ford");
+            session.createQuery("FROM CarModel").list().forEach(model -> make.addCarModel((CarModel) model));
+            session.save(make);
+
+            carModels.forEach(make::addCarModel);
+            carModels.forEach(carModel -> carModel.setCarMake(make));
+            */
+
+            List<CarMake> list1 = session.createQuery("FROM CarMake ").list();
+            for (CarModel carModel : list1.get(0).getCarModels()) {
+                System.out.println(carModel);
+            }
+            list2 = session.createQuery("SELECT DISTINCT c from CarMake c join fetch c.carModels").list();
 
             session.getTransaction().commit();
             session.close();
@@ -46,5 +66,6 @@ public class HbmRun {
         } finally {
             StandardServiceRegistryBuilder.destroy(registry);
         }
+        list2.forEach(carMake -> carMake.getCarModels().forEach(System.out::println));
     }
 }

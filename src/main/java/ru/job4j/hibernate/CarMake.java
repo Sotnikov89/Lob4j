@@ -22,7 +22,7 @@ public class CarMake {
     private String name;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "carMake")
     private List<CarModel> carModels = new ArrayList<>();
     public void addCarModel (CarModel carModel) {
         this.carModels.add(carModel);
