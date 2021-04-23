@@ -5,59 +5,49 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.hibernate.query.Query;
 
 public class HbmRun {
     public static void main(String[] args) {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure().build();
-        List<CarMake> list2 = new ArrayList<>();
         try {
             SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
             Session session = sf.openSession();
             session.beginTransaction();
 
-            /*
-            Book book1 = new Book("Двойник");
-            Book book2 = new Book("Ночной дозор");
-            Book book3 = new Book("Исповедь");
+            //session.save(Candidate.builder().name("Alex").experience(1).salary(100000).build());
+            //session.save(Candidate.builder().name("Ben").experience(3).salary(220000).build());
+            //session.save(Candidate.builder().name("Howard").experience(5).salary(300000).build());
 
-            Author author1 = new Author("Сергей Лукьяненко");
-            author1.addBook(book3);
-            Author author2 = new Author("Сара Уотерс");
-            author2.addBook(book3);
-            Author author3 = new Author("Ф.М. Достоевский");
-            author3.addBook(book1);
-            Author author4 = new Author("Жозе Сарамаго");
-            author4.addBook(book1);
-            Author author5 = new Author("Лев Толстой");
-            author5.addBook(book2);
-            Author author6 = new Author("Блаженный Августин");
-            author6.addBook(book2);
-
-            Stream.of(author1, author2, author3, author4, author5, author6).forEach(session::persist);
-            */
-
-            /*
-            List<CarModel> carModels = List.of(new CarModel("Escape"), new CarModel("Focus"),
-                    new CarModel("Kuga"), new CarModel("Mondeo"), new CarModel("Mustang"));
-            carModels.forEach(session::save);
-
-            CarMake make = new CarMake("Ford");
-            session.createQuery("FROM CarModel").list().forEach(model -> make.addCarModel((CarModel) model));
-            session.save(make);
-
-            carModels.forEach(make::addCarModel);
-            carModels.forEach(carModel -> carModel.setCarMake(make));
-            */
-
-            List<CarMake> list1 = session.createQuery("FROM CarMake ").list();
-            for (CarModel carModel : list1.get(0).getCarModels()) {
-                System.out.println(carModel);
+            Query getAll = session.createQuery("from Candidate");
+            for (Object candidate : getAll.list()) {
+                System.out.println(candidate);
             }
-            list2 = session.createQuery("SELECT DISTINCT c from CarMake c join fetch c.carModels").list();
+
+            Query getByName = session.createQuery("from Candidate c where c.name = :name");
+            getByName.setParameter("name", "Ben");
+            System.out.println(getByName.uniqueResult());
+
+            Query getById = session.createQuery("from Candidate c where c.id = :id");
+            getById.setParameter("id", 1);
+            System.out.println(getById.uniqueResult());
+
+            Query updateById = session.createQuery("update Candidate c " +
+                    "set c.name = :name, c.experience = :exp, c.salary = :sal where c.id = :id");
+            updateById.setParameter("name", "newName");
+            updateById.setParameter("exp", 10);
+            updateById.setParameter("sal", 500000);
+            updateById.setParameter("id", 1);
+            updateById.executeUpdate();
+            System.out.println(session.createQuery("from Candidate c where c.id = 1").uniqueResult());
+
+            Query deleteById = session.createQuery("delete Candidate c where c.id = :id");
+            deleteById.setParameter("id", 3);
+            deleteById.executeUpdate();
+            for (Object candidate : session.createQuery("from Candidate").list()) {
+                System.out.println(candidate);
+            }
 
             session.getTransaction().commit();
             session.close();
@@ -66,6 +56,5 @@ public class HbmRun {
         } finally {
             StandardServiceRegistryBuilder.destroy(registry);
         }
-        list2.forEach(carMake -> carMake.getCarModels().forEach(System.out::println));
     }
 }
