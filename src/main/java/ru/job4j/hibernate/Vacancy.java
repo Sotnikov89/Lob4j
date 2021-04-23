@@ -8,18 +8,20 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "candidate")
+@Table(name = "vacancy")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Candidate {
+public class Vacancy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private int experience;
-    private int salary;
-    @OneToOne(fetch = FetchType.LAZY)
-    private Vacancy vacancy;
+    private int minimumExp;
+    private int averageSal;
+    @OneToOne(mappedBy = "vacancy", fetch = FetchType.LAZY)
+    private Candidate candidate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private VacanciesBase vacanciesBase;
 }
