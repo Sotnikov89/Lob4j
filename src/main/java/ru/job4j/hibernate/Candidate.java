@@ -1,9 +1,6 @@
 package ru.job4j.hibernate;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -21,5 +18,7 @@ public class Candidate {
     private int experience;
     private int salary;
     @OneToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Vacancy vacancy;
 }

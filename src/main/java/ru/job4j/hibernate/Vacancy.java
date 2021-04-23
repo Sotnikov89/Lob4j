@@ -1,9 +1,6 @@
 package ru.job4j.hibernate;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -23,5 +20,7 @@ public class Vacancy {
     @OneToOne(mappedBy = "vacancy", fetch = FetchType.LAZY)
     private Candidate candidate;
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private VacanciesBase vacanciesBase;
 }

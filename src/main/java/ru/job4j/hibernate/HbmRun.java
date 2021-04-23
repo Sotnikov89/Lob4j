@@ -5,9 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.query.Query;
-
-import java.util.List;
 
 public class HbmRun {
     public static void main(String[] args) {
@@ -16,6 +13,7 @@ public class HbmRun {
         try {
             SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
             Session session = sf.openSession();
+            VacanciesBase base;
             session.beginTransaction();
 
             //session.save(Candidate.builder().name("Alex").experience(1).salary(100000).build());
@@ -70,9 +68,17 @@ public class HbmRun {
             can2.setVacancy(vacancy2);
             can3.setVacancy(vacancy3);
             */
+            base = session.createQuery("select base from VacanciesBase base " +
+                    "join fetch base.vacancies v " +
+                    "join fetch v.candidate c " +
+                    "where base.id = 2", VacanciesBase.class).uniqueResult();
 
             session.getTransaction().commit();
             session.close();
+
+            for (Vacancy vacancy : base.getVacancies()) {
+                System.out.println(vacancy);
+            };
 
         }  catch (Exception e) {
             e.printStackTrace();
