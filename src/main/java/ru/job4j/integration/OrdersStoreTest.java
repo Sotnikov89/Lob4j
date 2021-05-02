@@ -3,6 +3,7 @@ package ru.job4j.integration;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

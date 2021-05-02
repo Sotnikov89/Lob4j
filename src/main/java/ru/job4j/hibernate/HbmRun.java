@@ -11,9 +11,9 @@ public class HbmRun {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure().build();
         try {
+            VacanciesBase base;
             SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
             Session session = sf.openSession();
-            VacanciesBase base;
             session.beginTransaction();
 
             //session.save(Candidate.builder().name("Alex").experience(1).salary(100000).build());
@@ -69,9 +69,8 @@ public class HbmRun {
             can3.setVacancy(vacancy3);
             */
             base = session.createQuery("select base from VacanciesBase base " +
-                    "join fetch base.vacancies v " +
-                    "join fetch v.candidate c " +
-                    "where base.id = 2", VacanciesBase.class).uniqueResult();
+                    "join fetch base.vacancies v ", VacanciesBase.class)
+                    .uniqueResult();
 
             session.getTransaction().commit();
             session.close();
